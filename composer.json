@@ -1,0 +1,22 @@
+{
+    "name": "ludofleury/github-annotation-path-mapper",
+    "description": "Prefix github annotation file location from github action workflow command",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ludovic FLEURY",
+            "email": "ludo.fleury@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4 || ^8.0"
+    },
+    "bin": [
+        "bin/github-annotation-mapper"
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    }
+}

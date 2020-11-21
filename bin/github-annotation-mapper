@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+$input = stream_get_contents(STDIN);
+
+if (count($argv) != 2) {
+    throw new \RuntimeException('prefix mandatory');
+}
+
+if ($input === false) {
+    exit(2);
+}
+
+$count = 0;
+echo str_replace('file=', 'file=' . $argv[1], $input, $count);
+
+$count > 0 ? exit(2) : exit(0);

@@ -1,0 +1,23 @@
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: composer
+        run: docker run --rm -v ${{github.workspace}}:/var/app -w /var/app composer install
+
+      - name: test
+        run: docker run --rm -v ${{github.workspace}}:/var/app -w /var/app php:7-cli-alpine vendor/bin/phpunit tests/MapperTest.php
