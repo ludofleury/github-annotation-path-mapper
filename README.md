@@ -5,6 +5,8 @@
 
 # Github annotation path mapper
 
+**TL;DR: Basically `| sed ""` in php with sigterm 2 if a replacement occurs.**
+
 Prefix github annotation file location from github action workflow command.
 
 Typically, if you are running your github action in a docker container, 
