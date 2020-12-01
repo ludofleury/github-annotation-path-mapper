@@ -23,21 +23,40 @@ class MapperTest extends TestCase
         $prefix = 'src/';
         $command = sprintf('echo %s | %s %s', $annotation,  self::SCRIPT, $prefix);
 
-        exec ($command, $stdout, $sigterm);
+        $output = exec ($command, $stdout, $sigterm);
+
+        $this->assertEquals('test', $output);
 
         $this->assertIsInt($sigterm);
         $this->assertEquals(0, $sigterm);
     }
 
-    public function testExistWithSigterm2ToMarkGithubActionFailed()
+    public function testExitsWithSigterm2ToMarkGithubActionFailed()
     {
         $annotation = '::error file=app.js,line=10,col=15::Something went wrong';
         $prefix = 'src/';
         $command = sprintf('echo %s | %s %s', $annotation,  self::SCRIPT, $prefix);
 
-        exec ($command, $stdout, $sigterm);
+        $output = exec ($command, $stdout, $sigterm);
+
+        $this->assertEquals('::error file=src/app.js,line=10,col=15::Something went wrong', $output);
 
         $this->assertIsInt($sigterm);
         $this->assertEquals(2, $sigterm);
+    }
+
+    public function testExitsWithSigterm1WithSilentOption()
+    {
+        $annotation = '::error file=app.js,line=10,col=15::Something went wrong';
+        $prefix = 'src/';
+        $command = sprintf('echo %s | %s --silent %s', $annotation,  self::SCRIPT, $prefix);
+
+        $output = exec($command, $stdout, $sigterm);
+
+        $this->assertEquals('::error file=src/app.js,line=10,col=15::Something went wrong', $output);
+    
+
+        $this->assertIsInt($sigterm);
+        $this->assertEquals(0, $sigterm);
     }
 }

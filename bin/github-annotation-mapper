@@ -3,8 +3,33 @@
 
 $input = stream_get_contents(STDIN);
 
-if (count($argv) != 2) {
-    throw new \RuntimeException('prefix mandatory');
+if ($argc > 3 || $argc < 2) {
+    throw new \RuntimeException('Invalid arguments/options');
+}
+
+$options = getopt('s', ['silent']);
+$silent = isset($options['s']) || isset($options['silent']);
+$prefix = null;
+
+if ($silent && $argc !== 3) {
+    throw new \RuntimeException('Invalid arguments/options');
+}
+
+if (!$silent && $argc !== 2) {
+    throw new \RuntimeException('Invalid arguments/options');
+}
+
+$arguments = $argv;
+unset($arguments[0]);
+
+foreach ($arguments as $arg) {
+    if ($arg !== 's' && $arg !== 'silent') {
+        $prefix = $arg;
+    }
+}
+
+if ($prefix === null) {
+    throw new \RuntimeException('Prefix is mandatory');
 }
 
 if ($input === false) {
@@ -12,6 +37,6 @@ if ($input === false) {
 }
 
 $count = 0;
-echo str_replace('file=', 'file=' . $argv[1], $input, $count);
+echo str_replace('file=', 'file=' . $prefix, $input, $count);
 
-$count > 0 ? exit(2) : exit(0);
+$count > 0 ? ($silent ? exit(0) : exit(2)) : exit(0);
